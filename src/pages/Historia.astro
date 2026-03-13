@@ -1,0 +1,317 @@
+---
+
+interface Hito {
+
+  era: string;
+
+  titulo: string;
+
+  desc: string;
+
+  img: string;
+
+}
+
+
+
+const hitos: Hito[] = [
+
+  { 
+
+    era: "4,000 a.C.", 
+
+    titulo: "Antiguo Egipto", 
+
+    desc: "Descubrimiento accidental de la levadura y primeros hornos de barro.", 
+
+    img: "https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=800" 
+
+  },
+
+  { 
+
+    era: "100 d.C.", 
+
+    titulo: "Imperio Romano", 
+
+    desc: "Producción industrial, molinos de agua y creación del gremio de panaderos.", 
+
+    img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800" 
+
+  },
+
+  { 
+
+    era: "S. XIX", 
+
+    titulo: "Revolución Industrial", 
+
+    desc: "Invención del molino de rodillos y uso de levaduras químicas.", 
+
+    img: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=800" 
+
+  },
+
+  { 
+
+    era: "Hoy", 
+
+    titulo: "Era Moderna", 
+
+    desc: "Retorno a los procesos artesanales, masa madre y granos antiguos.", 
+
+    img: "https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?q=80&w=800" 
+
+  }
+
+];
+
+---
+
+
+
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Historia del Pan</title>
+
+    <style>
+
+        body {
+
+            margin: 0;
+
+            padding: 40px 20px;
+
+            background-color: #0c0b0a;
+
+            color: #e0d5c1;
+
+            font-family: system-ui, sans-serif;
+
+        }
+
+
+
+        h1 { text-align: center; color: #d4a373; margin-bottom: 50px; }
+
+
+
+        .timeline-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+            gap: 20px;
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+        }
+
+
+
+        .card {
+
+            background: #1a1814;
+
+            border: 1px solid #3d3428;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            cursor: pointer;
+
+            transition: all 0.3s ease;
+
+        }
+
+
+
+        .card:hover { transform: translateY(-5px); border-color: #d4a373; }
+
+
+
+        .card-img-container { width: 100%; aspect-ratio: 16 / 9; overflow: hidden; }
+
+
+
+        .card img { width: 100%; height: 100%; object-fit: cover; }
+
+
+
+        .card-content { padding: 20px; }
+
+        .era { color: #d4a373; font-weight: bold; font-size: 0.85rem; }
+
+        .titulo { margin: 10px 0; font-size: 1.4rem; color: #fff; }
+
+        .desc { font-size: 0.95rem; line-height: 1.6; color: #b5a896; }
+
+
+
+        #fs-overlay {
+
+            display: none;
+
+            position: fixed;
+
+            top: 0; left: 0; width: 100%; height: 100%;
+
+            background: rgba(0,0,0,0.98);
+
+            z-index: 9999;
+
+            justify-content: center;
+
+            align-items: center;
+
+            cursor: zoom-out;
+
+        }
+
+
+
+        #fs-overlay img { max-width: 95%; max-height: 95%; object-fit: contain; }
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+    <h1>Historia del Pan</h1>
+
+
+
+    <div class="timeline-grid">
+
+        {hitos.map((h) => (
+
+            <div class="card js-card">
+
+                <div class="card-img-container">
+
+                    <img src={h.img} alt={h.titulo} />
+
+                </div>
+
+                <div class="card-content">
+
+                    <span class="era">{h.era}</span>
+
+                    <h2 class="titulo">{h.titulo}</h2>
+
+                    <p class="desc">{h.desc}</p>
+
+                </div>
+
+            </div>
+
+        ))}
+
+    </div>
+
+
+
+    <div id="fs-overlay">
+
+        <img id="fs-img" src="" alt="Pantalla completa" />
+
+    </div>
+
+
+
+    <script>
+
+        const cards = document.querySelectorAll('.js-card');
+
+        const overlay = document.getElementById('fs-overlay') as HTMLElement;
+
+        const fullImg = document.getElementById('fs-img') as HTMLImageElement;
+
+
+
+        cards.forEach(card => {
+
+            card.addEventListener('click', () => {
+
+                const img = card.querySelector('img') as HTMLImageElement;
+
+                if (overlay && fullImg && img) {
+
+                    fullImg.src = img.src;
+
+                    overlay.style.display = 'flex';
+
+                    if (overlay.requestFullscreen) overlay.requestFullscreen();
+
+                }
+
+            });
+
+        });
+
+
+
+        const closeFs = () => {
+
+            if (document.fullscreenElement) {
+
+                document.exitFullscreen();
+
+            } else if (overlay) {
+
+                overlay.style.display = 'none';
+
+            }
+
+        };
+
+
+
+        overlay?.addEventListener('click', closeFs);
+
+
+
+        document.addEventListener('fullscreenchange', () => {
+
+            if (!document.fullscreenElement && overlay) overlay.style.display = 'none';
+
+        });
+
+    </script>
+
+</body>
+
+</html>
+
+
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main">
+    </div>
+</body>
+<style>
+    .main {
+    width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.5)50%, rgba(0,0,0,0.5)50%), url(https://specialtybakery.ca/wp-content/uploads/2015/11/bread-banner.jpg);
+    margin-top: -500px ;
+    background-size: cover;
+    height: 100vh;
+}
+</style>
